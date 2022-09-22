@@ -1,0 +1,49 @@
+@import '../../../styles/styles';
+
+.carousel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  .slides-container {
+    --height: 300px;
+    position: relative;
+    display: flex;
+
+    // remove later
+    width: 100%;
+    max-width: 600px;
+    height: var(--height);
+    overflow: hidden;
+    .slide {
+      position: absolute;
+      top: 0;
+      left: -100%;
+      opacity: 0;
+      visibility: hidden;
+      transition: 1s ease-in-out all;
+      &[data-slide='current'] {
+        left: 0;
+        opacity: 1;
+        visibility: visible;
+      }
+      &[data-slide='prev'] {
+        left: -100%;
+      }
+      &[data-slide='next'] {
+        left: 100%;
+      }
+    }
+  }
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: $base-spacing;
+    width: 100%;
+    button {
+      margin: $small-spacing;
+    }
+  }
+}

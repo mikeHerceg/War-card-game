@@ -1,0 +1,15 @@
+@import '../../../styles/styles';
+
+.bread-crumbs {
+  ol {
+    list-style: none;
+    li {
+      display: inline;
+      &:not(:last-of-type) {
+        &::after {
+          content: ' / ';
+        }
+      }
+    }
+  }
+}

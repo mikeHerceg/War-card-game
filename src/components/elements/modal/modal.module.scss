@@ -1,0 +1,46 @@
+@import '../../../styles/styles';
+
+.modal-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  background: color(default,transparent-medium);
+  opacity: 0;
+  animation: fade-in .25s ease-in forwards;
+}
+
+.modal {
+  z-index: 9;
+  position: relative;
+  padding: $base-spacing;
+  min-width: 300px;
+  min-height: 300px;
+  max-height: 60vh;
+  overflow-x: visible;
+  overflow-y: scroll;
+  button {
+    z-index: 10;
+    position: absolute;
+    top: ($base-spacing * -.25);
+    right: ($base-spacing * -.25);
+    border: 0;
+    background: transparent;
+    :hover {
+      cursor: pointer;
+    }
+  }
+}
+
+@keyframes scale-up {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

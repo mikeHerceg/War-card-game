@@ -1,0 +1,175 @@
+@import '../../styles/styles';
+
+.form-field {
+  position: relative;
+  display: block;
+  padding-bottom: ($base-spacing * 2.4);
+  min-width: 300px;
+  > p {
+    position: absolute;
+    bottom: ($base-spacing);
+    left: 0;
+  }
+
+  label {
+    @include font-size(20);
+    margin-bottom: 10px;
+
+    span {
+      @include font-size(14);
+    }
+  }
+
+  input,
+  select,
+  textarea {
+    @include font-size(16);
+
+    display: block;
+    border-radius: 0;
+    border: 2px solid color(neutral, lighter);
+    padding: 10px 14px;
+    width: 100%;
+    background-color: color(neutral, lightest);
+    font-family: $brand-font;
+    transition: .2s $ease-in-sine;
+    appearance: none;
+
+    &:hover {
+      border-color: color(secondary, hover);
+    }
+
+    &:focus {
+      outline: none;
+      border-color: color(secondary, base);
+    }
+
+    &:disabled {
+      background-color: color(neutral, lighter);
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    &::placeholder {
+      color: color(neutral, base);
+    }
+
+    &::-ms-clear {
+      display: none; /* hide IE11/Edge input clear icon */
+    }
+  }
+
+  &[data-error='true'] {
+    color: $error-color;
+
+    input,
+    select,
+    textarea {
+      border-color: $error-color;
+    }
+  }
+
+  /*
+ * checkboxes and radios
+ *
+ *********************************************************/
+  input[type='radio'] {
+    border-radius: 50%;
+  }
+  input[type='radio'],
+  input[type='checkbox'] {
+    display: inline-block;
+    margin: 0;
+    margin-right: $base-spacing;
+    margin-bottom: -2px;
+    border: 2px solid color(neutral, lighter);
+    padding: 0;
+    width: 20px;
+    height: 20px;
+    background-color: color(neutral, lightest);
+    cursor: pointer;
+    transition: .2s $ease-in-sine;
+    appearance: none;
+
+    &:focus,
+    &:focus-visible {
+      outline: 1px black solid;
+      outline-offset: 2px;
+    }
+
+    &:hover {
+      background-color: color(secondary, hover);
+    }
+
+    &:checked {
+      background-color: color(secondary, base);
+    }
+
+    &:disabled {
+      background-color: color(neutral, lighter);
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    .has-error & {
+      border-color: color(primary, base);
+    }
+  }
+
+  /*
+ * Select
+ *
+ *********************************************************/
+
+  select {
+    z-index: 20;
+    position: relative;
+    padding-right: ($base-spacing * 2);
+    background-image: url("data:image/svg+xml, <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 407.4 224.3'><polygon points='386.3,0 203.7,181.9 21.2,0 0,21.2 203.7,224.3 407.4,21.2 '/></svg>");
+    background-repeat: no-repeat;
+    background-position: (100% - 2.5%) 50%;
+    background-size: 20px;
+  }
+}
+
+
+/*
+ * fieldsets
+ *
+ *********************************************************/
+.fieldset-wrapper {
+  padding: 0 0 ($base-spacing * 2);
+
+  &[data-error='true'] {
+    color: $error-color;
+  }
+
+  legend {
+    @include line-height(24, 30);
+    @include font-size(24);
+
+    width: 100%;
+    font-family: $brand-font-light;
+
+    @media (min-width: breakpoint(medium)) {
+      @include line-height(30, 40);
+      @include font-size(30);
+    }
+  }
+
+  &[data-variant='inline'] .options {
+
+    display: flex;
+    justify-content: space-between;
+
+    > div {
+      margin-right: $base-spacing;
+    }
+  }
+
+  .form-field {
+    position: inherit;
+    padding-bottom: 0;
+  }
+}
+

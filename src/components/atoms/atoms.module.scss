@@ -1,0 +1,14 @@
+@import '../../styles/styles';
+
+
+.card {
+  box-shadow: $box-shadow-default;
+  padding: $base-spacing;
+  background-color: (default, light);
+}
+
+.error {
+  @include font-size(16);
+  margin: 8px auto 0;
+  color: color(primary, base);
+}

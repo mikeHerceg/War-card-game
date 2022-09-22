@@ -1,0 +1,54 @@
+@import '../../../styles/styles';
+
+.tool-tip {
+  @include font-size(14);
+  position: absolute;
+  display: block;
+  border-radius: 5px;
+  border: 1px solid color(neutral, lighter);
+  padding: 10px 15px;
+  background-color: color(neutral, lightest);
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(10px) translateY(-50%);
+  transition:
+    .2s visibility ease-in-out,
+    .2s opacity ease-in-out;
+  transition: opacity .25s ease-in;
+
+  &::before,
+  &::after {
+    position: absolute;
+    top: 50%;
+    display: block;
+    border-right: 0;
+    transform: translateY(-50%) rotate(45deg);
+    content: '';
+  }
+
+  &::before {
+    left: -6px;
+    width: 10px;
+    height: 10px;
+    background-color: inherit;
+  }
+
+  &::after {
+    z-index: -1;
+    left: -8px;
+    width: 12px;
+    height: 12px;
+    background-color: color(neutral, lighter);
+  }
+  &[data-visible='true'] {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity .25s ease-in;
+  }
+}
+.tool-tip-container {
+  &:hover {
+    cursor: default;
+  }
+}
