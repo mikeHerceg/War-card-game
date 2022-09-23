@@ -7,18 +7,18 @@ import React, {
 import { GameType } from '../generic.types';
 
 const initialGame = {
-  players: [
-    {
+  players: {
+    playerOne: {
       name: 'Player 1',
       wins: 0,
       loses: 0,
     },
-    {
+    playerTwo: {
       name: 'Player 2',
       wins: 0,
       loses: 0,
     },
-  ],
+  },
   gameReady: false,
 };
 

@@ -17,6 +17,6 @@ export type PlayerType = {
 }
 
 export type GameType = {
-    players:PlayerType[],
+    players:{playerOne:PlayerType,playerTwo:PlayerType}
     gameReady:boolean,
 };

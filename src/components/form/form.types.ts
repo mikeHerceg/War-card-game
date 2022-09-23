@@ -13,6 +13,7 @@ export enum FieldTypes {
 
 export type Rules = {
     maxLength?:number,
+    minLength?:number,
     matcher?:RegExp
 }
 
