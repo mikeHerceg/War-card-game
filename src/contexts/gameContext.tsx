@@ -9,8 +9,14 @@ import { GameType } from '../generic.types';
 export enum ActionTypes {
     START_GAME = 'START_GAME',
     UPDATE_PLAYERS ='UPDATE_PLAYERS',
-    UPDATE_GAME_READY ='UPDATE_GAME_READY'
+    UPDATE_GAME_READY = 'UPDATE_GAME_READY',
+    UPDATE_DECK_ID = 'UPDATE_DECK_ID'
 }
+export type Action = {
+    type:ActionTypes
+    payload:GameType
+}
+
 const initialGame = {
   players: {
     playerOne: {
@@ -27,17 +33,12 @@ const initialGame = {
   gameReady: false,
 };
 
-type Action = {
-    type:ActionTypes
-    payload:GameType
-}
+
 
 export const GameContext = createContext <{
     state: GameType;
     dispatch: React.Dispatch<Action>;
   }>({ state: initialGame, dispatch: () => null });
-
-
 
 
 export const gameReducer = (state:GameType, action:Action) => {
@@ -57,6 +58,11 @@ export const gameReducer = (state:GameType, action:Action) => {
       return {
         ...state,
         gameReady: action.payload.gameReady,
+      };
+    case 'UPDATE_DECK_ID':
+      return {
+        ...state,
+        deckID: action.payload.deckID,
       };
     default:
       return state;

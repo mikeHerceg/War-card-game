@@ -1,12 +1,15 @@
 import { useContext } from 'react';
 import { ActionTypes, GameContext } from '../../contexts/gameContext';
+import { getNewDeck } from '../../services';
 
 export const useGameSetup = () => {
   const { state, dispatch } = useContext(GameContext);
   const { players, gameReady } = state;
 
   const saveAndStart = (playerNames:Record<string, unknown>) => {
-    console.log(playerNames);
+
+    getNewDeck({ state, dispatch });
+
     return dispatch({
       payload: {
         players: {

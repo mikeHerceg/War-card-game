@@ -3,11 +3,11 @@
 .form-field {
   position: relative;
   display: block;
-  padding-bottom: ($base-spacing * 2.4);
+  padding-bottom: ($base-spacing * 1.4);
   min-width: 300px;
   > p {
     position: absolute;
-    bottom: ($base-spacing);
+    bottom: 0;
     left: 0;
   }
 

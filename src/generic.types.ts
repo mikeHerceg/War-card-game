@@ -19,4 +19,5 @@ export type PlayerType = {
 export type GameType = {
     players:{playerOne:PlayerType,playerTwo:PlayerType}
     gameReady:boolean,
+    deckID?:string,
 };

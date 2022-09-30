@@ -10,5 +10,5 @@
 .error {
   @include font-size(16);
   margin: 8px auto 0;
-  color: color(primary, base);
+  color: color(error, base);
 }
