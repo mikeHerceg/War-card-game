@@ -1,23 +1,19 @@
 
-import React, { useContext } from 'react';
+import React from 'react';
 import styles from './game-setup.module.scss';
-import { GameContext } from '../../contexts/gameContext';
+
 import { Card } from '../atoms';
 import { FormWrapper } from '../form';
 import { FieldTypes } from '../form/form.types';
+import { useGameSetup } from './game-setup.hooks';
 
-interface GameSetupProps {
-    // add prop types for components here
-}
 
 export function GameSetup({
   ...props
-}:GameSetupProps) {
-  const { gameReady, players } = useContext(GameContext).state;
+}) {
+  const { gameReady, players, saveAndStart } = useGameSetup();
 
   if (gameReady) return null;
-
-
 
   const fields = [
     {
@@ -47,8 +43,9 @@ export function GameSetup({
   return (
     <div {...props} data-testid="game-setup" className={styles['game-setup']}>
       <Card>
-        <FormWrapper fields={fields} />
+        <FormWrapper fields={fields} onSubmit={saveAndStart}/>
       </Card>
+      {gameReady.toString()}
     </div>
   );
 }

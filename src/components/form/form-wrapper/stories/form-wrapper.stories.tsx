@@ -56,6 +56,6 @@ export const DefaultFormWrapper = () => {
 
 
     return (
-        <FormWrapper fields={fields} />
+        <FormWrapper fields={fields} onSubmit={values=>console.log(values)}/>
     )};
 

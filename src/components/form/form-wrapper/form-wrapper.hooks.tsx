@@ -4,7 +4,10 @@ import { InputField, Fieldset, RadioField, CheckboxField, TextareaField, SelectF
 
 
 
-export const useFormWrapper = (fields: Field[]) => {
+export const useFormWrapper = (
+  fields: Field[],
+  onSubmit:(values:Record<string, unknown>)=>void,
+) => {
 
   const [fieldsState, setFieldsState] = useState<Field[]>(fields);
 
@@ -64,11 +67,14 @@ export const useFormWrapper = (fields: Field[]) => {
     const formData = new FormData(e.target);
     const formValues = Object.fromEntries(formData);
     validate({ formValues, fields })
-      .then(value =>
+      .then((value) => {
         // do something with the Values
-        alert(JSON.stringify(value)),
+        console.log(value);
+        onSubmit(value as Record<string, unknown>);
+      },
       ).catch(error =>
       // show validation messages
+      // eslint-disable-next-line
         console.error(error.message),
       );
   };

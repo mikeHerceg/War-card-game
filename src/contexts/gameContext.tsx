@@ -6,6 +6,11 @@ import React, {
 } from 'react';
 import { GameType } from '../generic.types';
 
+export enum ActionTypes {
+    START_GAME = 'START_GAME',
+    UPDATE_PLAYERS ='UPDATE_PLAYERS',
+    UPDATE_GAME_READY ='UPDATE_GAME_READY'
+}
 const initialGame = {
   players: {
     playerOne: {
@@ -22,21 +27,22 @@ const initialGame = {
   gameReady: false,
 };
 
+type Action = {
+    type:ActionTypes
+    payload:GameType
+}
+
 export const GameContext = createContext <{
     state: GameType;
-    dispatch: React.Dispatch<any>;
+    dispatch: React.Dispatch<Action>;
   }>({ state: initialGame, dispatch: () => null });
 
 
 
-type Action = {
-    type:'CREATE_PRODUCT'|'UPDATE_PLAYERS'|'UPDATE_GAME_READY',
-    payload:GameType
-}
 
 export const gameReducer = (state:GameType, action:Action) => {
   switch (action.type) {
-    case 'CREATE_PRODUCT':
+    case 'START_GAME':
       return {
         ...state,
         players: action.payload.players,
@@ -57,10 +63,10 @@ export const gameReducer = (state:GameType, action:Action) => {
   }
 };
 
-export function GameProvider(props: PropsWithChildren<{}>) {
+export function GameProvider(props: PropsWithChildren<Record<string, unknown>>) {
   const [state, dispatch] = useReducer(gameReducer, initialGame);
 
-  const gameContextValues = useMemo(() => ({ state, dispatch }), []);
+  const gameContextValues = useMemo(() => ({ state, dispatch }), [state]);
 
   return (
     <GameContext.Provider value={gameContextValues}>

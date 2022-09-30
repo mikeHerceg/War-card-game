@@ -1,5 +1,9 @@
 {
-  "extends": "airbnb",
+  "extends": [
+      "airbnb",
+      "plugin:@typescript-eslint/eslint-recommended",
+      "plugin:@typescript-eslint/recommended"
+    ],
   "env": {
     "browser": true,
     "jquery": true,
@@ -98,6 +102,8 @@
     "react/no-array-index-key": "off",
     "react/no-did-update-set-state": "off",
     "react/sort-comp": "off",
-    "react/state-in-constructor": "off"
+    "react/state-in-constructor": "off",
+    "no-shadow": "off",
+    "@typescript-eslint/no-shadow": ["error"]
   }
 }
