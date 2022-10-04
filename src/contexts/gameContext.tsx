@@ -8,9 +8,8 @@ import { GameType } from '../generic.types';
 
 export enum ActionTypes {
     START_GAME = 'START_GAME',
-    UPDATE_PLAYERS ='UPDATE_PLAYERS',
-    UPDATE_GAME_READY = 'UPDATE_GAME_READY',
-    UPDATE_DECK_ID = 'UPDATE_DECK_ID'
+    UPDATE_DECK_ID = 'UPDATE_DECK_ID',
+    UPDATE_DECK = 'UPDATE_DECK,'
 }
 export type Action = {
     type:ActionTypes
@@ -43,26 +42,22 @@ export const GameContext = createContext <{
 
 export const gameReducer = (state:GameType, action:Action) => {
   switch (action.type) {
-    case 'START_GAME':
+    case ActionTypes.START_GAME:
       return {
         ...state,
         players: action.payload.players,
         gameReady: action.payload.gameReady,
       };
-    case 'UPDATE_PLAYERS':
-      return {
-        ...state,
-        players: action.payload.players,
-      };
-    case 'UPDATE_GAME_READY':
-      return {
-        ...state,
-        gameReady: action.payload.gameReady,
-      };
-    case 'UPDATE_DECK_ID':
+    case ActionTypes.UPDATE_DECK_ID:
       return {
         ...state,
         deckID: action.payload.deckID,
+      };
+    case ActionTypes.UPDATE_DECK:
+      return {
+        ...state,
+        cards: action.payload.cards,
+        cardsRemaining: action.payload.cardsRemaining,
       };
     default:
       return state;
