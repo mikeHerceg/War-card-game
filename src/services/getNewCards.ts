@@ -1,17 +1,17 @@
-import { ActionTypes, Action } from '../contexts/gameContext';
 import { GameType } from '../generic.types';
 
 export async function getNewCards(
-  { state, dispatch, count = 2 } : {state:GameType, dispatch:React.Dispatch<Action>, count?:number},
+  { state, count = 2 } : {state:GameType, count?:number},
 ) {
   const { deckID } = state;
-  if (!deckID) return;
+  if (!deckID) return null;
   const res = await fetch(`https://www.deckofcardsapi.com/api/deck/${deckID}/draw/?count=${count}`);
   const data = await res.json();
-  if (!data.success) return;
+  if (!data.success) return null;
 
-  dispatch({
-    payload: { ...state, cards: data.cards, cardsRemaining: data.remaining },
-    type: ActionTypes.UPDATE_DECK,
-  });
+  return {
+    cards: data.cards,
+    cardsRemaining: data.remaining,
+  };
+
 }

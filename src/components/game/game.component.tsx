@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useGame } from './game.hooks';
 import styles from './game.module.scss';
@@ -9,26 +8,33 @@ import { Tags } from '../../generic.types';
 //     // add prop types for components here
 // }
 
-export function Game({
-  ...props
-}) {
-  const { state, players, gameReady, dealCards } = useGame();
+export function Game({ ...props }) {
+
+  const { players, gameReady, outCome, cards, cardsRemaining, dealCards } = useGame();
 
   if (!gameReady) return null;
 
   return (
     <div {...props} data-testid="game" className={styles.game}>
-      <TypeTag tag={Tags.p} content={players.playerOne.name}/>
-      <TypeTag tag={Tags.p} content={players.playerTwo.name}/>
-      {
-      state.cardsRemaining &&
-      <TypeTag tag={Tags.p} content={`cards remaining: ${state.cardsRemaining}`}/>
-      }
+      <TypeTag tag={Tags.p} content={players.playerOne.name} />
+      <TypeTag tag={Tags.p} content={players.playerTwo.name} />
+      {cardsRemaining && (
+        <TypeTag
+          tag={Tags.p}
+          content={`cards remaining: ${cardsRemaining}`}
+        />
+      )}
+      {outCome && (
+        <div>
+          <TypeTag tag={Tags.p} content={outCome} />
+        </div>
+      )}
       <div>
-        {state.cards?.map(card => <img src={card.image} alt={card.code}/>)}
+        {cards?.map(card => (
+          <img src={card.image} alt={card.code} key={card.code}/>
+        ))}
       </div>
-      <Button onClick={dealCards} text="Deal"/>
+      <Button onClick={dealCards} text="Deal" />
     </div>
   );
 }
-
