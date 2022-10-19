@@ -16,8 +16,11 @@ export function Game({ ...props }) {
 
   return (
     <div {...props} data-testid="game" className={styles.game}>
-      <TypeTag tag={Tags.p} content={players.playerOne.name} />
-      <TypeTag tag={Tags.p} content={players.playerTwo.name} />
+      <TypeTag tag={Tags.h4} content={players.playerOne.name} />
+      <TypeTag tag={Tags.p} content={`Wins: ${players.playerOne.wins}`} />
+
+      <TypeTag tag={Tags.h4} content={players.playerTwo.name} />
+      <TypeTag tag={Tags.p} content={`Wins: ${players.playerTwo.wins}`} />
       {cardsRemaining && (
         <TypeTag
           tag={Tags.p}

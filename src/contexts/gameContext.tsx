@@ -9,7 +9,8 @@ import { GameType } from '../generic.types';
 export enum ActionTypes {
     START_GAME = 'START_GAME',
     UPDATE_DECK_ID = 'UPDATE_DECK_ID',
-    UPDATE_DECK = 'UPDATE_DECK,'
+    UPDATE_DECK = 'UPDATE_DECK,',
+    UPDATE_WINS = 'UPDATE_WINS,'
 }
 export type Action = {
     type:ActionTypes
@@ -58,6 +59,11 @@ export const gameReducer = (state:GameType, action:Action) => {
         ...state,
         cards: action.payload.cards,
         cardsRemaining: action.payload.cardsRemaining,
+      };
+    case ActionTypes.UPDATE_WINS:
+      return {
+        ...state,
+        players: action.payload.players,
       };
     default:
       return state;
