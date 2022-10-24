@@ -12,8 +12,18 @@ export const useGame = () => {
 
   const [outCome, setOutcome] = useState<string>();
 
+  const dealCards = async () => {
+    const results = await getNewCards({ state });
+    console.log(results);
+    if (!results) return;
+    dispatch({
+      payload: { ...state, cards: results.cards, cardsRemaining: results.cardsRemaining },
+      type: ActionTypes.UPDATE_DECK,
+    });
+  };
 
-  const handleWinner = (winner:'player1' | 'player2') => {
+  const handleWinner = (winner:'player1' | 'player2', warWon = false) => {
+    const cardsWon = warWon ? 10 : 2;
     const payload = ():GameType => {
       if (winner === 'player1') {
         setOutcome(`${p1Name} wins`);
@@ -23,7 +33,7 @@ export const useGame = () => {
             ...state.players,
             playerOne: {
               ...state.players.playerOne,
-              wins: state.players.playerOne.wins + 1,
+              wins: state.players.playerOne.wins + cardsWon,
             },
           },
         };
@@ -35,7 +45,7 @@ export const useGame = () => {
           ...state.players,
           playerTwo: {
             ...state.players.playerTwo,
-            wins: state.players.playerTwo.wins + 1,
+            wins: state.players.playerTwo.wins + cardsWon,
           },
         },
       };
@@ -80,6 +90,21 @@ export const useGame = () => {
   const declareWar = () => {
     setOutcome('WAR');
     // TODO
+    //
+    setTimeout(async () => {
+      const results = await getNewCards({ state, count: 8 });
+      if (!results) return;
+      const p1LastCard = results?.cards.pop();
+      const p2LastCard = results?.cards.pop();
+      dispatch({
+        payload: {
+          ...state,
+          cards: [p1LastCard, p2LastCard],
+          cardsRemaining: results.cardsRemaining,
+        },
+        type: ActionTypes.UPDATE_DECK,
+      });
+    }, 3000);
   };
 
   const evaluateWinner = () => {
@@ -87,13 +112,10 @@ export const useGame = () => {
     const p1CardValue = cards[0].value;
     const p2CardValue = cards[1].value;
     const faces = ['ACE', 'JACK', 'KING', 'QUEEN'];
-
     if (p1CardValue === p2CardValue) {
-      console.log('war');
       declareWar();
       return;
     }
-
     // check faces
     const hasFaceValue = (value:string) => faces.includes(value);
     if (hasFaceValue(p1CardValue) || hasFaceValue(p2CardValue)) {
@@ -110,20 +132,8 @@ export const useGame = () => {
     handleWinner('player2');
   };
 
-  const dealCards = async () => {
-    const results = await getNewCards({ state });
-    console.log(results);
-    if (!results) return;
-    dispatch({
-      payload: { ...state, cards: results.cards, cardsRemaining: results.cardsRemaining },
-      type: ActionTypes.UPDATE_DECK,
-    });
-
-  };
-
   useEffect(() => {
     evaluateWinner();
-    console.log('ran');
   }, [cards]);
 
 
