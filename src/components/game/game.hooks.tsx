@@ -58,15 +58,14 @@ export const useGame = () => {
     }
     if (p1CardValue === 'KING') {
       return handleWinner('player1');
-
     }
     if (p2CardValue === 'KING') {
       return handleWinner('player2');
     }
-    if (p1CardValue === 'Queen') {
+    if (p1CardValue === 'QUEEN') {
       return handleWinner('player1');
     }
-    if (p2CardValue === 'Queen') {
+    if (p2CardValue === 'QUEEN') {
       return handleWinner('player2');
     }
     if (p1CardValue === 'JACK') {
@@ -98,8 +97,6 @@ export const useGame = () => {
     // check faces
     const hasFaceValue = (value:string) => faces.includes(value);
     if (hasFaceValue(p1CardValue) || hasFaceValue(p2CardValue)) {
-      console.log('face valu');
-
       evaluateFaces({ p1CardValue, p2CardValue });
       return;
     }
@@ -107,12 +104,10 @@ export const useGame = () => {
     // check values
     if (+p1CardValue > +p2CardValue) {
       handleWinner('player1');
-      console.log('number valu');
       return;
     }
 
     handleWinner('player2');
-
   };
 
   const dealCards = async () => {
@@ -123,7 +118,7 @@ export const useGame = () => {
       payload: { ...state, cards: results.cards, cardsRemaining: results.cardsRemaining },
       type: ActionTypes.UPDATE_DECK,
     });
-    evaluateWinner();
+
   };
 
   useEffect(() => {

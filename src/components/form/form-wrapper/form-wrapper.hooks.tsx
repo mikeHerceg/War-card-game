@@ -88,15 +88,15 @@ export const useFormWrapper = (
         case (FieldTypes.Email):
         case (FieldTypes.Number):
         case (FieldTypes.Password):
-          return <InputField {...field}/>;
+          return <InputField {...field} key={field.name}/>;
         case (FieldTypes.Textarea):
-          return <TextareaField {...field}/>;
+          return <TextareaField {...field} key={field.name}/>;
         case (FieldTypes.Select):
-          return <SelectField {...field}/>;
+          return <SelectField {...field} key={field.name}/>;
         case (FieldTypes.Radio):
           if (field?.options) {
             return (
-              <Fieldset variant={field?.variant} legendText={field.label}>
+              <Fieldset variant={field?.variant} legendText={field.label} key={field.name}>
                 {field.options.map(option => (
                   <RadioField
                     id={option.value}
@@ -111,7 +111,7 @@ export const useFormWrapper = (
         case (FieldTypes.Checkbox):
           if (field?.options) {
             return (
-              <Fieldset variant={field?.variant} legendText={field.label}>
+              <Fieldset variant={field?.variant} legendText={field.label} key={field.name}>
                 {field.options.map(option => (
                   <CheckboxField
                     id={option.value}
