@@ -7,13 +7,12 @@ import { Game } from './game.component';
 describe('Game', () => {
 
 
-  const renderComponent = renderWithContext(<Game/>, MockContext);
-  it('should render correctly', () => {
+  it('should render when gameReady is true', () => {
     // Arrange
+    const renderComponent = renderWithContext(<Game/>, { ...MockContext, gameReady: true });
 
     // Act
     const { getByTestId } = renderComponent;
-
     // Assert
     const component = getByTestId('game');
     expect(component).toBeDefined();

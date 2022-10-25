@@ -5,20 +5,16 @@ import { GameContext, gameReducer } from '../contexts/gameContext';
 import { GameType } from '../generic.types';
 
 
-export const renderWithContext = (component:any, context:GameType) => {
+export const renderWithContext = (component:any, context:GameType) =>
 
+// const [state, dispatch] = useReducer(gameReducer, context);
 
-  const [state, dispatch] = useReducer(gameReducer, context);
-
-  const gameContextValues = useMemo(() => ({ state, dispatch }), [state]);
-  return render(
-    <GameContext.Provider value={gameContextValues}>
+  // const gameContextValues = useMemo(() => ({ state, dispatch }), [state]);
+  render(
+    <GameContext.Provider value={{ state: context, dispatch: {} }}>
       {component}
     </GameContext.Provider>,
   );
-};
-
-
 export const MockContext = {
   players: {
     playerOne: {
