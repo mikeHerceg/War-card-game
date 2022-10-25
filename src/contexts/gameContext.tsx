@@ -17,7 +17,7 @@ export type Action = {
     payload:GameType
 }
 
-const initialGame = {
+export const initialGame = {
   players: {
     playerOne: {
       name: 'Player 1',

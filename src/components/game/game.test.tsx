@@ -1,20 +1,18 @@
 // Generated with util/create-component.js
 
 import React from 'react';
-import { render } from '@testing-library/react';
-
+import { renderWithContext, MockContext } from '../../test-helpers';
 import { Game } from './game.component';
 
 describe('Game', () => {
 
 
-  const renderComponent = () => render(<Game/>);
-
+  const renderComponent = renderWithContext(<Game/>, MockContext);
   it('should render correctly', () => {
     // Arrange
 
     // Act
-    const { getByTestId } = renderComponent();
+    const { getByTestId } = renderComponent;
 
     // Assert
     const component = getByTestId('game');
