@@ -1,7 +1,6 @@
 import { useContext, useState, useEffect, useMemo } from 'react';
 import { GameContext, ActionTypes } from '../../contexts/gameContext';
-import { getNewCards } from '../../services/getNewCards';
-import { GameType } from '../../generic.types';
+import { GameType, Card } from '../../generic.types';
 
 export const useGame = () => {
   const { state, dispatch } = useContext(GameContext);
@@ -11,50 +10,37 @@ export const useGame = () => {
   const p2Name = useMemo(() => state.players.playerTwo.name, [state.players.playerTwo]);
 
   const [outCome, setOutcome] = useState<string>();
+  const [p1TopCard, setP1TopCard] = useState<Card>();
+  const [p2TopCard, setP2TopCard] = useState<Card>();
 
-  const dealCards = async () => {
-    const results = await getNewCards({ state });
-    console.log(results);
-    if (!results) return;
-    dispatch({
-      payload: { ...state, cards: results.cards, cardsRemaining: results.cardsRemaining },
-      type: ActionTypes.UPDATE_DECK,
-    });
+
+  const dealCards = () => {
+    // todo
+    setP1TopCard(state.players.playerOne.cards.pop());
+    setP2TopCard(state.players.playerTwo.cards.pop());
+
   };
 
   const handleWinner = (winner:'player1' | 'player2', warWon = false) => {
     const cardsWon = warWon ? 10 : 2;
-    const payload = ():GameType => {
+    const payload = () => {
       if (winner === 'player1') {
         setOutcome(`${p1Name} wins`);
         return {
-          ...state,
-          players: {
-            ...state.players,
-            playerOne: {
-              ...state.players.playerOne,
-              wins: state.players.playerOne.wins + cardsWon,
-            },
-          },
+          p1cards: [...state.players.playerOne.cards, p1TopCard, p2TopCard],
+          p2cards: [...state.players.playerTwo.cards],
         };
       }
       setOutcome(`${p2Name} wins`);
       return {
-        ...state,
-        players: {
-          ...state.players,
-          playerTwo: {
-            ...state.players.playerTwo,
-            wins: state.players.playerTwo.wins + cardsWon,
-          },
-        },
+        p1cards: [...state.players.playerOne.cards],
+        p2cards: [...state.players.playerTwo.cards, p1TopCard, p2TopCard],
       };
     };
 
-
     dispatch({
       payload: payload(),
-      type: ActionTypes.UPDATE_WINS,
+      type: ActionTypes.UPDATE_PLAYER_CARDS,
     });
   };
 
@@ -91,26 +77,26 @@ export const useGame = () => {
     setOutcome('WAR');
     // TODO
     //
-    setTimeout(async () => {
-      const results = await getNewCards({ state, count: 8 });
-      if (!results) return;
-      const p1LastCard = results?.cards.pop();
-      const p2LastCard = results?.cards.pop();
-      dispatch({
-        payload: {
-          ...state,
-          cards: [p1LastCard, p2LastCard],
-          cardsRemaining: results.cardsRemaining,
-        },
-        type: ActionTypes.UPDATE_DECK,
-      });
-    }, 3000);
+    // setTimeout(async () => {
+    //   const results = await getNewCards({ state, count: 8 });
+    //   if (!results) return;
+    //   const p1LastCard = results?.cards.pop();
+    //   const p2LastCard = results?.cards.pop();
+    //   dispatch({
+    //     payload: {
+    //       ...state,
+    //       cards: [p1LastCard, p2LastCard],
+    //       cardsRemaining: results.cardsRemaining,
+    //     },
+    //     type: ActionTypes.UPDATE_DECK,
+    //   });
+    // }, 3000);
   };
 
   const evaluateWinner = () => {
-    if (!cards) return;
-    const p1CardValue = cards[0].value;
-    const p2CardValue = cards[1].value;
+    if (!p1TopCard || !p2TopCard) return;
+    const p1CardValue = p1TopCard.value;
+    const p2CardValue = p2TopCard.value;
     const faces = ['ACE', 'JACK', 'KING', 'QUEEN'];
     if (p1CardValue === p2CardValue) {
       declareWar();
@@ -134,7 +120,7 @@ export const useGame = () => {
 
   useEffect(() => {
     evaluateWinner();
-  }, [cards]);
+  }, [p1TopCard, p2TopCard]);
 
 
   return {
@@ -142,7 +128,7 @@ export const useGame = () => {
     players,
     gameReady,
     outCome,
-    cards,
+    cards: [p1TopCard, p2TopCard],
     cardsRemaining,
     dealCards,
   };

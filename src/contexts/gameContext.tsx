@@ -8,26 +8,24 @@ import { GameType } from '../generic.types';
 
 export enum ActionTypes {
     START_GAME = 'START_GAME',
-    UPDATE_DECK_ID = 'UPDATE_DECK_ID',
+    UPDATE_PLAYER_CARDS = 'UPDATE_PLAYER_CARDS',
     UPDATE_DECK = 'UPDATE_DECK,',
     UPDATE_WINS = 'UPDATE_WINS,'
 }
 export type Action = {
     type:ActionTypes
-    payload:GameType
+    payload:any
 }
 
 export const initialGame = {
   players: {
     playerOne: {
       name: 'Player 1',
-      wins: 0,
-      loses: 0,
+      cards: [],
     },
     playerTwo: {
       name: 'Player 2',
-      wins: 0,
-      loses: 0,
+      cards: [],
     },
   },
   gameReady: false,
@@ -49,10 +47,20 @@ export const gameReducer = (state:GameType, action:Action) => {
         players: action.payload.players,
         gameReady: action.payload.gameReady,
       };
-    case ActionTypes.UPDATE_DECK_ID:
+    case ActionTypes.UPDATE_PLAYER_CARDS:
       return {
         ...state,
-        deckID: action.payload.deckID,
+        players: {
+          ...state.players,
+          playerOne: {
+            ...state.players.playerOne,
+            cards: action.payload.p1cards,
+          },
+          playerTwo: {
+            ...state.players.playerTwo,
+            cards: action.payload.p2cards,
+          },
+        },
       };
     case ActionTypes.UPDATE_DECK:
       return {

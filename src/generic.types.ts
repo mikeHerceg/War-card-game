@@ -11,8 +11,7 @@ export enum Tags {
 
 export type PlayerType = {
     name:string,
-    wins:number,
-    loses:number,
+    cards:Card[],
     currentGameCards?:string[],
 }
 

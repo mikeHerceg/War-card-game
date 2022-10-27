@@ -17,10 +17,10 @@ export function Game({ ...props }) {
   return (
     <div {...props} data-testid="game" className={styles.game}>
       <TypeTag tag={Tags.h4} content={players.playerOne.name} />
-      <TypeTag tag={Tags.p} content={`Won cards: ${players.playerOne.wins}`} />
+      <TypeTag tag={Tags.p} content={`cards: ${players.playerOne.cards.length}`} />
 
       <TypeTag tag={Tags.h4} content={players.playerTwo.name} />
-      <TypeTag tag={Tags.p} content={`Won cards: ${players.playerTwo.wins}`} />
+      <TypeTag tag={Tags.p} content={`cards: ${players.playerTwo.cards.length}`} />
       {cardsRemaining && (
         <TypeTag
           tag={Tags.p}
@@ -33,9 +33,12 @@ export function Game({ ...props }) {
         </div>
       )}
       <div>
-        {cards?.map(card => (
-          <img src={card.image} alt={card.code} key={card.code}/>
-        ))}
+        {cards?.map((card) => {
+          if (!card) return null;
+          return (
+            <img src={card.image} alt={card.code} key={card.code}/>
+          );
+        })}
       </div>
       <Button onClick={dealCards} text="Deal" />
     </div>
