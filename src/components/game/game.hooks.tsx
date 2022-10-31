@@ -12,6 +12,7 @@ export const useGame = () => {
   const [outCome, setOutcome] = useState<string>();
   const [p1TopCard, setP1TopCard] = useState<Card>();
   const [p2TopCard, setP2TopCard] = useState<Card>();
+  const [warCards, setWarCards] = useState<Card[]>([]);
 
 
   const dealCards = () => {
@@ -21,8 +22,29 @@ export const useGame = () => {
 
   };
 
-  const handleWinner = (winner:'player1' | 'player2', warWon = false) => {
-    const cardsWon = warWon ? 10 : 2;
+  const handleWinner = (winner:'player1' | 'player2') => {
+    if (warCards.length > 0) {
+      const payload = () => {
+        if (winner === 'player1') {
+          setOutcome(`${p1Name} wins`);
+          return {
+            p1cards: [...state.players.playerOne.cards, ...warCards],
+            p2cards: [...state.players.playerTwo.cards],
+          };
+        }
+        setOutcome(`${p2Name} wins`);
+        return {
+          p1cards: [...state.players.playerOne.cards],
+          p2cards: [...state.players.playerTwo.cards, ...warCards],
+        };
+      };
+      dispatch({
+        payload: payload(),
+        type: ActionTypes.UPDATE_PLAYER_CARDS,
+      });
+      setWarCards([]);
+      return;
+    }
     const payload = () => {
       if (winner === 'player1') {
         setOutcome(`${p1Name} wins`);
@@ -37,11 +59,11 @@ export const useGame = () => {
         p2cards: [...state.players.playerTwo.cards, p1TopCard, p2TopCard],
       };
     };
-
     dispatch({
       payload: payload(),
       type: ActionTypes.UPDATE_PLAYER_CARDS,
     });
+
   };
 
   const evaluateFaces = ({ p1CardValue, p2CardValue }:{p1CardValue:string, p2CardValue:string}) => {
@@ -75,22 +97,19 @@ export const useGame = () => {
 
   const declareWar = () => {
     setOutcome('WAR');
-    // TODO
-    //
-    // setTimeout(async () => {
-    //   const results = await getNewCards({ state, count: 8 });
-    //   if (!results) return;
-    //   const p1LastCard = results?.cards.pop();
-    //   const p2LastCard = results?.cards.pop();
-    //   dispatch({
-    //     payload: {
-    //       ...state,
-    //       cards: [p1LastCard, p2LastCard],
-    //       cardsRemaining: results.cardsRemaining,
-    //     },
-    //     type: ActionTypes.UPDATE_DECK,
-    //   });
-    // }, 3000);
+
+    setTimeout(() => {
+      const p1Cards = state.players.playerOne.cards;
+      const p2Cards = state.players.playerTwo.cards;
+
+      const p1WarCards = p1Cards.splice(p1Cards.length - 4);
+      const p2WarCards = p2Cards.splice(p2Cards.length - 4);
+
+      setWarCards([...p1WarCards, ...p2WarCards]);
+      setP1TopCard(p1WarCards.pop());
+      setP2TopCard(p2WarCards.pop());
+
+    }, 2000);
   };
 
   const evaluateWinner = () => {
@@ -98,6 +117,7 @@ export const useGame = () => {
     const p1CardValue = p1TopCard.value;
     const p2CardValue = p2TopCard.value;
     const faces = ['ACE', 'JACK', 'KING', 'QUEEN'];
+
     if (p1CardValue === p2CardValue) {
       declareWar();
       return;
