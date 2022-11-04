@@ -4,25 +4,26 @@ import { GameType, Card } from '../../generic.types';
 
 export const useGame = () => {
   const { state, dispatch } = useContext(GameContext);
-  const { gameReady, players, cards, cardsRemaining } = state;
+  const { gameReady, players, cardsRemaining } = state;
 
   const p1Name = useMemo(() => state.players.playerOne.name, [state.players.playerOne]);
   const p2Name = useMemo(() => state.players.playerTwo.name, [state.players.playerTwo]);
-
+  const [render, setRenders] = useState<number>(0);
   const [outCome, setOutcome] = useState<string>();
   const [p1TopCard, setP1TopCard] = useState<Card>();
   const [p2TopCard, setP2TopCard] = useState<Card>();
   const [warCards, setWarCards] = useState<Card[]>([]);
-
+  const [currentCards, setCurrentCards] = useState<Card[]>([]);
+  const [gameWinner, setGameWinner] = useState<string>();
 
   const dealCards = () => {
-    // todo
     setP1TopCard(state.players.playerOne.cards.pop());
     setP2TopCard(state.players.playerTwo.cards.pop());
-
   };
 
   const handleWinner = (winner:'player1' | 'player2') => {
+    // todo losing cards along the way
+    console.log(warCards);
     if (warCards.length > 0) {
       const payload = () => {
         if (winner === 'player1') {
@@ -104,8 +105,9 @@ export const useGame = () => {
 
       const p1WarCards = p1Cards.splice(p1Cards.length - 4);
       const p2WarCards = p2Cards.splice(p2Cards.length - 4);
-
-      setWarCards([...p1WarCards, ...p2WarCards]);
+      if (p1TopCard && p2TopCard) {
+        setWarCards([...warCards, ...p1WarCards, ...p2WarCards, p1TopCard, p2TopCard]);
+      }
       setP1TopCard(p1WarCards.pop());
       setP2TopCard(p2WarCards.pop());
 
@@ -138,9 +140,26 @@ export const useGame = () => {
     handleWinner('player2');
   };
 
+  const isCardCountZero = (amount:number) => amount === 0;
+
   useEffect(() => {
-    evaluateWinner();
+    setRenders(render + 1);
+    if (!render) return;
+    const evaluateGame = async () => {
+      setCurrentCards(p1TopCard && p2TopCard ? [p1TopCard, p2TopCard] : []);
+      await new Promise((resolve) => { evaluateWinner(); resolve(true); });
+      if (isCardCountZero(state.players.playerOne.cards.length)) {
+        setGameWinner('player2 Wins Game');
+        return;
+      }
+      if (isCardCountZero(state.players.playerTwo.cards.length)) {
+        setGameWinner('player1 Wins Game');
+
+      }
+    };
+    evaluateGame();
   }, [p1TopCard, p2TopCard]);
+
 
 
   return {
@@ -148,8 +167,10 @@ export const useGame = () => {
     players,
     gameReady,
     outCome,
-    cards: [p1TopCard, p2TopCard],
+    currentCards,
     cardsRemaining,
+    gameWinner,
     dealCards,
+    render,
   };
 };
