@@ -5,9 +5,8 @@ import { Button } from '../buttons/button';
 import { TypeTag } from '../atoms';
 import { Tags } from '../../generic.types';
 import { Player } from '../player';
-// interface GameProps {
-//     // add prop types for components here
-// }
+import { PlayingCard } from '../playing-card';
+
 
 export function Game({ ...props }) {
 
@@ -17,7 +16,7 @@ export function Game({ ...props }) {
     gameWinner,
     outCome,
     currentCards,
-    cardsRemaining,
+
     render,
     dealCards,
   } = useGame();
@@ -45,7 +44,8 @@ export function Game({ ...props }) {
         {currentCards?.map((card) => {
           if (!card) return null;
           return (
-            <img src={card.image} alt={card.code} key={card.code}/>
+            <PlayingCard card={card} key={card.code}/>
+
           );
         })}
       </div>

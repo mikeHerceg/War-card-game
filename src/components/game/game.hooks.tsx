@@ -1,10 +1,10 @@
 import { useContext, useState, useEffect, useMemo } from 'react';
 import { GameContext, ActionTypes } from '../../contexts/gameContext';
-import { GameType, Card } from '../../generic.types';
+import { Card } from '../../generic.types';
 
 export const useGame = () => {
   const { state, dispatch } = useContext(GameContext);
-  const { gameReady, players, cardsRemaining } = state;
+  const { gameReady, players } = state;
 
   const p1Name = useMemo(() => state.players.playerOne.name, [state.players.playerOne]);
   const p2Name = useMemo(() => state.players.playerTwo.name, [state.players.playerTwo]);
@@ -168,7 +168,7 @@ export const useGame = () => {
     gameReady,
     outCome,
     currentCards,
-    cardsRemaining,
+
     gameWinner,
     dealCards,
     render,
