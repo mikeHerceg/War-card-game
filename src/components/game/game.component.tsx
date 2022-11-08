@@ -4,6 +4,7 @@ import styles from './game.module.scss';
 import { Button } from '../buttons/button';
 import { TypeTag } from '../atoms';
 import { Tags } from '../../generic.types';
+import { Player } from '../player';
 // interface GameProps {
 //     // add prop types for components here
 // }
@@ -29,20 +30,12 @@ export function Game({ ...props }) {
   }
   return (
     <div {...props} data-testid="game" className={styles.game}>
-      <TypeTag tag={Tags.p} content={`total cards ${players.playerOne.cards.length + players.playerTwo.cards.length}`} />
       <TypeTag tag={Tags.p} content={`"Rounds" ${render}`} />
-
-      <TypeTag tag={Tags.h4} content={players.playerOne.name} />
-      <TypeTag tag={Tags.p} content={`cards: ${players.playerOne.cards.length}`} />
-
-      <TypeTag tag={Tags.h4} content={players.playerTwo.name} />
-      <TypeTag tag={Tags.p} content={`cards: ${players.playerTwo.cards.length}`} />
-      {cardsRemaining && (
-        <TypeTag
-          tag={Tags.p}
-          content={`cards remaining: ${cardsRemaining}`}
-        />
-      )}
+      <Button onClick={dealCards} text="Deal" disabled={outCome === 'WAR'}/>
+      <div style={{ display: 'flex', gap: '10px' }}>
+        <Player name={players.playerOne.name} cardsInHand={players.playerOne.cards.length}/>
+        <Player name={players.playerTwo.name} cardsInHand={players.playerTwo.cards.length}/>
+      </div>
       {outCome && (
         <div>
           <TypeTag tag={Tags.p} content={outCome} />
@@ -56,7 +49,7 @@ export function Game({ ...props }) {
           );
         })}
       </div>
-      <Button onClick={dealCards} text="Deal" disabled={outCome === 'WAR'}/>
+
     </div>
   );
 }
