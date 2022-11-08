@@ -40,12 +40,11 @@ export function Game({ ...props }) {
           <TypeTag tag={Tags.p} content={outCome} />
         </div>
       )}
-      <div>
+      <div style={{ display: 'flex', gap: '10px' }}>
         {currentCards?.map((card) => {
           if (!card) return null;
           return (
             <PlayingCard card={card} key={card.code}/>
-
           );
         })}
       </div>
