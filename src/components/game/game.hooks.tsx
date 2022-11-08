@@ -50,14 +50,14 @@ export const useGame = () => {
       if (winner === 'player1') {
         setOutcome(`${p1Name} wins`);
         return {
-          p1cards: [...state.players.playerOne.cards, p1TopCard, p2TopCard],
+          p1cards: [p1TopCard, p2TopCard, ...state.players.playerOne.cards],
           p2cards: [...state.players.playerTwo.cards],
         };
       }
       setOutcome(`${p2Name} wins`);
       return {
         p1cards: [...state.players.playerOne.cards],
-        p2cards: [...state.players.playerTwo.cards, p1TopCard, p2TopCard],
+        p2cards: [p1TopCard, p2TopCard, ...state.players.playerTwo.cards],
       };
     };
     dispatch({
